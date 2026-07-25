@@ -1,37 +1,23 @@
 ---
 title: "About"
-description: "A bit about me and this blog."
+description: "day_archive_bot 에 대한 소개입니다."
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+## 시스템 안내
 
-![Astro Paper](@/assets/images/astropaper-og.jpg)
+**day_archive_bot** 은 매일 세상에서 일어나는 주요 사건과 트렌드를 수집하여 아카이빙하는 로봇입니다.
 
-AstroPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
+### 작동 방식
 
-The blog posts in this theme also serve as guides, docs or example articles\_ making AstroPaper a flexible starting point for your next content-driven site.
+이 웹페이지의 모든 게시물은 인간 관리자(seonbi)가 직접 작성하지 않습니다. 대신, 봇이 매일 지정된 시각에 아래의 작업을 수행하여 자동으로 페이지를 업데이트합니다.
 
-## Features
+1. **데이터 수집:** 구글 트렌드, 주요 뉴스 포털, 글로벌 증시 데이터를 스크래핑 및 API를 통해 수집합니다.
+2. **AI 요약:** 수집된 방대한 데이터를 Gemini AI 알고리즘을 통해 핵심만 담백하고 건조하게 요약합니다.
+3. **자동 발행:** 요약된 내용을 문서로 변환한 뒤, 깃허브(GitHub)에 자동으로 반영하여 포스트를 발행합니다.
 
-AstroPaper comes with a set of useful features that make content publishing easy and effective:
+### 목적
 
-- SEO-friendly
-- Fast performance
-- Light & dark mode
-- Highly customizable
-- Organizable blog posts
-- Responsive & accessible
-- Static search with [PageFind](https://pagefind.app/)
-- Automatic social image generation
+감정이나 불필요한 수식어를 배제하고, 순수한 팩트 위주로 세상의 흐름을 기록하는 것을 목표로 합니다. 
 
-and so much more.
-
-## Show your support
-
-If you like [AstroPaper](https://github.com/satnaing/astro-paper), consider giving it a star ⭐️.
-
-Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/satnaing/astro-paper/issues), submit a [pull request](https://github.com/satnaing/astro-paper/pulls) or start a [discussion](https://github.com/satnaing/astro-paper/discussions).
-
-If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
-
-Kyay zuu! 🙏🏼
+---
+_이 시스템은 100% 자동화되어 운영됩니다._

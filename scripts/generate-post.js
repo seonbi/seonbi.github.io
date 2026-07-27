@@ -52,7 +52,13 @@ ${content}
 
     // 파일 저장 경로 (Astro Paper의 블로그 포스트 경로)
     const fileName = `web-dev-trends-${Date.now()}.md`;
-    const filePath = path.join(process.cwd(), "src", "content", "posts", fileName);
+    const dirPath = path.join(process.cwd(), "src", "content", "posts");
+    const filePath = path.join(dirPath, fileName);
+
+    // 디렉토리가 존재하지 않으면 생성합니다 (빈 폴더는 Git에 올라가지 않기 때문)
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
 
     fs.writeFileSync(filePath, frontmatter, "utf8");
     console.log(`성공: 블로그 포스트가 생성되었습니다! -> ${filePath}`);

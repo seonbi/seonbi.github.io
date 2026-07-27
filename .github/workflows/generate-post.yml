@@ -1,8 +1,8 @@
 name: Generate Blog Post with Gemini
 
 on:
-  schedule:
-    - cron: '0 0 * * 1' # 매주 월요일 자정에 실행 (UTC 기준)
+  # schedule:
+    # - cron: '0 0 * * 1' # 매주 월요일 자정에 실행 (UTC 기준)
   workflow_dispatch: # 수동으로 실행할 수 있는 버튼 활성화
 
 permissions:

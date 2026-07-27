@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write # 레포지토리에 푸시할 권한 필요
+  actions: write # 다른 워크플로우(배포)를 실행할 권한 필요
 
 jobs:
   generate:
@@ -17,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24
 
@@ -30,6 +31,8 @@ jobs:
         run: node scripts/generate-post.js
 
       - name: Commit and Push Changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -38,6 +41,10 @@ jobs:
           if ! git diff-index --quiet HEAD; then
             git commit -m "docs: auto-generate blog post via Gemini API"
             git push
+            
+            # 푸시 완료 후 강제로 배포 워크플로우(deploy.yml) 실행
+            echo "Triggering deploy workflow..."
+            gh workflow run deploy.yml --ref main
           else
             echo "No changes to commit"
           fi

@@ -3,7 +3,11 @@ const LIGHT = "light";
 const DARK = "dark";
 
 function getPreferredTheme(): string {
-  const stored = localStorage.getItem(THEME_KEY);
+  // const stored = localStorage.getItem(THEME_KEY);
+  let stored = null;
+  try {
+    stored = localStorage.getItem(THEME_KEY);
+  } catch (e) {}
   if (stored) return stored;
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? DARK
@@ -16,7 +20,10 @@ let themeValue: string =
   getPreferredTheme();
 
 function persist(): void {
-  localStorage.setItem(THEME_KEY, themeValue);
+  // localStorage.setItem(THEME_KEY, themeValue);
+  try {
+    localStorage.setItem(THEME_KEY, themeValue);
+  } catch (e) {}
   reflect();
 }
 

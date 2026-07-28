@@ -14,26 +14,43 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 async function generatePost() {
   try {
-    // 사용할 모델 선택 (최신 모델인 gemini-2.5-pro 또는 gemini-2.5-flash 권장)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    // 사용할 모델 선택 (가장 강력한 최신 Pro 모델 사용)
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3.1-pro",
+      tools: [
+        {
+          googleSearch: {} // AI가 최신 뉴스를 검색할 수 있도록 허용!
+        }
+      ],
+      generationConfig: { responseMimeType: "application/json" }
+    });
 
-    // 프롬프트 작성 (블로그 주제)
+    // 프롬프트 작성 (블로그 주제 및 JSON 출력 요청)
     const prompt = `
-당신은 기술 블로그의 전문적인 작성자입니다.
-오늘의 주제는 '최신 웹 개발 트렌드 2026'입니다.
-이 주제로 독자들이 흥미를 느낄 만한 블로그 글을 Markdown 형식으로 작성해주세요.
-제목은 '최신 웹 개발 트렌드 2026'로 하고, 내용은 서론, 본론, 결론으로 나누어주세요.
-응답은 순수하게 블로그 내용(본문)만 반환해주세요.
+당신은 트렌드에 매우 민감한 테크/투자 블로그 전문 작성자입니다.
+반드시 '실시간 구글 검색'을 활용하여 다음 작업을 수행해주세요.
+
+최근 1주일 내의 글로벌 증시 흐름을 분석해 주세요. 특히 엔비디아, 메타, 구글 같은 빅테크 기업들의 주가에 영향을 미칠 수 있는 '잠재적 위협' 또는 '새로운 기회'로써, 월가 기관 투자자들이나 VC들이 최근 새롭게 지목하기 시작한 구체적인 '기술 키워드(특정 AI 모델명, 논문, 신규 프레임워크 등)' 1개를 찾아주세요.
+
+뻔한 매크로 뉴스는 제외하고, 증시 전문가들이 주목하는 이 낯선 기술 키워드가 무엇이며 주식 시장 판도를 어떻게 바꿀 수 있는지 블로그 글로 작성해주세요.
+
+응답은 다음 JSON 형식으로만 정확히 반환해주세요:
+{
+  "title": "[발굴한 키워드]를 포함한 독창적이고 매력적인 제목",
+  "description": "이 기술이 왜 증시에 영향을 미치는지 요약한 1~2문장의 설명",
+  "content": "서론, 본론(해당 기술의 특징과 주가/시장에 미칠 파급력), 결론으로 나누어진 Markdown 형식의 전체 블로그 본문"
+}
 `;
 
     console.log("Gemini API에 요청을 보내는 중...");
     const result = await model.generateContent(prompt);
-    const content = result.response.text();
+    const responseText = result.response.text();
+    const parsed = JSON.parse(responseText);
 
-    // Astro Paper Frontmatter 양식에 맞게 데이터 구성
-    const title = "최신 웹 개발 트렌드 2026";
+    const title = parsed.title;
+    const description = parsed.description;
+    const content = parsed.content;
     const date = new Date().toISOString();
-    const description = "2026년 새롭게 떠오르는 최신 웹 개발 트렌드와 기술들을 알아봅니다.";
 
     const frontmatter = `---
 author: "AI Writer"

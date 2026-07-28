@@ -45,7 +45,7 @@ async function generatePost() {
     };
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-pro",
+      model: "gemini-3.1-pro-preview",
       tools: [
         {
           googleSearch: {}

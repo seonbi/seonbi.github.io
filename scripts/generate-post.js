@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import fs from "fs";
 import path from "path";
 
@@ -10,52 +10,39 @@ if (!apiKey) {
   process.exit(1);
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const ai = new GoogleGenAI({ apiKey });
 
 async function generatePost() {
   try {
     const schema = {
-      type: SchemaType.OBJECT,
+      type: Type.OBJECT,
       properties: {
         title: {
-          type: SchemaType.STRING,
+          type: Type.STRING,
           description: "단편 소설의 흥미를 유발하는 창의적이고 매력적인 제목"
         },
         slug: {
-          type: SchemaType.STRING,
+          type: Type.STRING,
           description: "영문 소문자와 하이픈(-)만으로 구성된 짧고 간결한 URL용 슬러그 (예: ai-story-123)"
         },
         description: {
-          type: SchemaType.STRING,
+          type: Type.STRING,
           description: "소설의 분위기나 핵심 시놉시스를 요약한 1~2문장의 설명 (SEO 메타 디스크립션 용도)"
         },
         content: {
-          type: SchemaType.STRING,
+          type: Type.STRING,
           description: "흥미진진한 단편 소설 본문 및 교훈. Markdown 문법(h2, h3, 볼드체, 인용구 등)을 적극 활용하여 가독성 있게 작성할 것."
         },
         tags: {
-          type: SchemaType.ARRAY,
+          type: Type.ARRAY,
           items: {
-            type: SchemaType.STRING
+            type: Type.STRING
           },
           description: "소설의 장르나 핵심 소재를 나타내는 3~5개의 태그 (예: SF, 판타지, 스릴러, 반전 등)"
         }
       },
       required: ["title", "slug", "description", "content", "tags"]
     };
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-pro-preview",
-      tools: [
-        {
-          googleSearch: {}
-        }
-      ],
-      generationConfig: { 
-        responseMimeType: "application/json",
-        responseSchema: schema
-      }
-    });
 
     const prompt = `
 당신은 매일 밤 새로운 이야기를 들려주는 현대판 세헤라자데입니다.
@@ -70,8 +57,16 @@ async function generatePost() {
 `;
 
     console.log("Gemini API에 요청을 보내는 중...");
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-pro-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: schema,
+        tools: [{ googleSearch: {} }]
+      }
+    });
+    const responseText = response.text;
     
     let parsed;
     try {

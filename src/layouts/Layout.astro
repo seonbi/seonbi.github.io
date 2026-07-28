@@ -100,11 +100,7 @@ const rssHref = getRelativeLocaleUrl(
     -->
     <script is:inline>
       (function () {
-        // const stored = localStorage.getItem("theme");
-        let stored = null;
-        try {
-          stored = localStorage.getItem("theme");
-        } catch (e) {}
+        const stored = localStorage.getItem("theme");
         const prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)"
         ).matches;

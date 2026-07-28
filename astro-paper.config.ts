@@ -3,9 +3,12 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://seonbi.github.io/",
-    title: "day_archive_bot",
-    description: "Archiving every day.",
-    author: "day_archive_bot",
+    // title: "day_archive_bot",
+    // description: "Archiving every day.",
+    // author: "day_archive_bot",
+    title: "AI 천일야화",
+    description: "매일 밤 10시, AI가 들려주는 세상에 단 하나뿐인 기묘한 이야기",
+    author: "AI 세헤라자데",
     profile: "",
     ogImage: "",
     lang: "en",

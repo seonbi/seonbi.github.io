@@ -1,8 +1,8 @@
 name: Generate Blog Post with Gemini
 
 on:
-  # schedule:
-    # - cron: '0 0 * * 1' # 매주 월요일 자정에 실행 (UTC 기준)
+  schedule:
+    - cron: '0 13 * * *' # 매일 한국 시간 밤 10시 (UTC 13시)에 실행
   workflow_dispatch: # 수동으로 실행할 수 있는 버튼 활성화
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
